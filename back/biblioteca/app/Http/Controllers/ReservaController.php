@@ -37,31 +37,48 @@ class ReservaController extends Controller
 
 
 
+    // En tu método de préstamo en ReservaController
     public function realizarReserva($libroId, $usuarioId)
     {
         $libro = Libro::find($libroId);
         $usuario = Usuario::findOrFail($usuarioId);
 
         if ($libro && $usuario) {
-            // Realizar la reserva
-            $reserva = new Reserva([
-                'titleDelivered' => $libro->title,
-                'deliveredTo' => $usuario->username,
-                'active' => true,
-            ]);
+            if ($libro->disponibleParaPrestamo()) {
+                // Realizar la reserva
+                $reserva = new Reserva([
+                    'titleDelivered' => $libro->title,
+                    'deliveredTo' => $usuario->username,
+                    'active' => true,
+                ]);
 
-            $reserva->libro()->associate($libro);
-            $reserva->usuario()->associate($usuario);
-            $reserva->save();
+                $reserva->libro()->associate($libro);
+                $reserva->usuario()->associate($usuario);
+                $reserva->save();
 
-            // Incrementar el contador de veces entregado del libro
-            $libro->incrementarVecesEntregado();
+                // Actualizar el historial de libros del usuario
+                $historial = $usuario->historial ?? [];
+                $historial[] = [
+                    'titulo' => $libro->title,
+                    'fecha_prestamo' => now(),
+                ];
+                $usuario->update(['historial' => $historial]);
 
-            return $reserva;
-        } else {
-            return null;
+                // Incrementar el contador de veces entregado del libro
+                $libro->incrementarVecesEntregado();
+
+                return $reserva;
+            } else {
+                // Agregar al usuario a la lista de espera
+                $usuario->agregarAListaEspera($libro);
+
+                return null;
+            }
         }
+
+        return null;
     }
+
 
 
     public function prestarLibro(Request $request, $libroId, $usuarioId)

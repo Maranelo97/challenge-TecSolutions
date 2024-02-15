@@ -18,6 +18,7 @@ Route::apiResource('libros', LibroController::class);
 Route::apiResource('usuarios', UsuarioController::class);
 
 Route::post('/reservas/prestar/{libroId}/{usuarioId}', 'App\Http\Controllers\ReservaController@realizarReserva' );
+Route::put('/reservas/{reservaId}/devolver','App\Http\Controllers\ReservaController@devolverLibro');
 
 //Ussers Routes
 Route::apiResource('reservas', ReservaController::class);
