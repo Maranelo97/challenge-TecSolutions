@@ -64,9 +64,14 @@ class LibroController extends Controller
 
         return response()->json(['message' => 'Libro actualizado exitosamente'], 200);
     }
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $libro = Libro::destroy($request->id);
-        return $libro;
+        $libro = Libro::destroy($id);
+
+        if ($libro) {
+            return response()->json(['message' => 'Libro eliminado con éxito'], 200);
+        } else {
+            return response()->json(['error' => 'No se pudo eliminar el libro'], 404);
+        }
     }
 }

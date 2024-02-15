@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
 class Usuario extends Model
 {
+
+    use HasApiTokens,Notifiable;
     protected $fillable = ['username', 'password', 'email', 'historial'];
     protected $casts = [
         'historial' => 'array',
