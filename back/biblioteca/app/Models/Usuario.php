@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Usuario extends Model
 {
     protected $fillable = ['username', 'password', 'email', 'historial'];
+    protected $casts = [
+        'historial' => 'array',
+    ];
+
 
     public function reservas()
     {
