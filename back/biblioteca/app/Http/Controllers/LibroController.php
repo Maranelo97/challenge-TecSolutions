@@ -27,31 +27,43 @@ class LibroController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'rating' => 'required|integer',
+            'timesDelivered' => 'required|integer',
+            'delivered' => 'required|boolean',
+            'created_at' => 'required|date'
+        ]);
+
         $libro = new Libro();
-        $libro->title = $request->title;
-        $libro->description = $request->description;
-        $libro->rating = $request->rating;
-        $libro->timesDelivered = $request->timesDelivered;
-        $libro->delivered = $request->delivered;
-        $libro->created_at = $request->created_at;
-        $libro->updated_at = $request->updated_at;
+        $libro->title = $request->input('title');
+        $libro->description = $request->input('description');
+        $libro->rating = $request->input('rating');
+        $libro->timesDelivered = $request->input('timesDelivered');
+        $libro->delivered = $request->input('delivered');
+        $libro->created_at = $request->input('created_at');
 
         $libro->save();
+
+        return response()->json(['message' => 'Libro creado exitosamente'], 201);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $libro = Libro::findfOrFail($request->id);
-        $libro->title = $request->title;
-        $libro->description = $request->description;
-        $libro->rating = $request->rating;
-        $libro->timesDelivered = $request->timesDelivered;
-        $libro->delivered = $request->delivered;
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'rating' => 'required|integer',
+            'timesDelivered' => 'required|integer',
+            'delivered' => 'required|boolean',
+        ]);
 
-        $libro->save();
-        return $libro;
+        $libro = Libro::findOrFail($id);
+        $libro->update($request->all());
+
+        return response()->json(['message' => 'Libro actualizado exitosamente'], 200);
     }
-
     public function destroy(Request $request)
     {
         $libro = Libro::destroy($request->id);

@@ -14,9 +14,15 @@ return new class extends Migration
         Schema::create('reservas', function (Blueprint $table) {
             $table->id();
             $table->string('titleDelivered');
-            $table->timestamp('deliveredAt');
+            $table->timestamp('deliveredAt')->default(now());
             $table->string('deliveredTo');
+            $table->boolean('active')->default(true);
+            $table->unsignedBigInteger('libro_id');
+            $table->unsignedBigInteger('usuario_id');
             $table->timestamps();
+
+            $table->foreign('libro_id')->references('id')->on('libros')->onDelete('cascade');
+            $table->foreign('usuario_id')->references('id')->on('usuarios')->onDelete('cascade');
         });
     }
 

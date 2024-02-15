@@ -18,7 +18,9 @@ return new class extends Migration
             $table->integer('rating');
             $table->integer('timesDelivered');
             $table->boolean('delivered');
+            $table->unsignedBigInteger('usuario_id')->nullable();
             $table->timestamps();
+            $table->foreign('usuario_id')->references('id')->on('usuarios')->onDelete('set null');
         });
     }
 

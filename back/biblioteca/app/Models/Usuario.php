@@ -20,6 +20,39 @@ class Usuario extends Model
         return $this->historial;
     }
 
+    public static function realizarReserva($libroId, $usuarioId)
+{
+    $libro = Libro::find($libroId);
+    $usuario = Usuario::find($usuarioId);
+
+    if ($libro && $usuario) {
+        if ($libro->disponibleParaPrestamo()) {
+            // Realizar la reserva
+            $reserva = new Reserva([
+                'titleDelivered' => $libro->title,
+                'deliveredTo' => $usuario->username,
+                'deliveredAt' => now(),  // Establecer el valor actual de tiempo
+                'active' => true,
+            ]);
+
+            $reserva->libro()->associate($libro);
+            $reserva->usuario()->associate($usuario);
+            $reserva->save();
+
+            // Incrementar el contador de veces entregado del libro
+            $libro->incrementarVecesEntregado();
+
+            return $reserva;
+        } else {
+            // Agregar al usuario a la lista de espera
+            $usuario->agregarAListaEspera($libro);
+
+            return null;
+        }
+    }
+
+    return null;
+}
     public function agregarAListaEspera($libro)
     {
         // Verificar si el usuario ya está en lista de espera para el libro

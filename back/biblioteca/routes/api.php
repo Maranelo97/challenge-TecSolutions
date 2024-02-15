@@ -1,22 +1,23 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\LibroController;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\ReservaController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
-Route::get('/libros', 'App\Http\Controllers\LibroController@index');
+//Books routes
+Route::apiResource('libros', LibroController::class);
+
+//Reservation Routes
+Route::apiResource('usuarios', UsuarioController::class);
+
+Route::post('/reservas/prestar/{libroId}/{usuarioId}', 'App\Http\Controllers\ReservaController@realizarReserva' );
+
+//Ussers Routes
+Route::apiResource('reservas', ReservaController::class);
