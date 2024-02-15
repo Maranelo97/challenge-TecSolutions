@@ -15,16 +15,14 @@ class Libro extends Model
         return $this->hasMany(Reserva::class);
     }
 
+    public function tieneReservasActivas()
+    {
+        return $this->reservas()->where('active', true)->exists();
+    }
+
     // Método para verificar la disponibilidad de préstamo del libro
     public function disponibleParaPrestamo()
     {
         return !$this->delivered && $this->reservas->where('active', true)->count() == 0;
-    }
-
-    // Método para incrementar el contador de veces entregado del libro
-    public function incrementarVecesEntregado()
-    {
-        $this->increment('timesDelivered');
-        $this->update(['delivered' => false]);
     }
 }

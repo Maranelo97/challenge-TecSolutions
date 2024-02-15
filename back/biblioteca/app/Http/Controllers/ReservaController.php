@@ -44,36 +44,39 @@ class ReservaController extends Controller
         $usuario = Usuario::findOrFail($usuarioId);
 
         if ($libro && $usuario) {
+            // Verificar si el libro ya está prestado
+            if ($libro->tieneReservasActivas()) {
+                return response()->json(['message' => 'El libro ya está prestado, agregado a la lista de espera'], 200);
+            }
 
-                // Realizar la reserva
-                $reserva = new Reserva([
-                    'titleDelivered' => $libro->title,
-                    'deliveredTo' => $usuario->username,
-                    'active' => true,
-                ]);
+            // Realizar la reserva
+            $reserva = new Reserva([
+                'titleDelivered' => $libro->title,
+                'deliveredTo' => $usuario->username,
+                'active' => true,
+            ]);
 
-                $reserva->libro()->associate($libro);
-                $reserva->usuario()->associate($usuario);
-                $reserva->save();
+            $reserva->libro()->associate($libro);
+            $reserva->usuario()->associate($usuario);
+            $reserva->save();
 
-                // Actualizar el historial de libros del usuario
-                $historial = $usuario->historial ?? [];
-                $historial[] = [
-                    'titulo' => $libro->title,
-                    'fecha_prestamo' => now(),
-                ];
-                $usuario->update(['historial' => $historial]);
-
-                // Incrementar el contador de veces entregado del libro
+            // Actualizar el historial de libros del usuario
+            $historial = $usuario->historial ?? [];
+            $historial[] = [
+                'titulo' => $libro->title,
+                'fecha_prestamo' => now(),
+            ];
+            $usuario->update(['historial' => $historial]);
 
 
-                // Devolver la información de la reserva
-                return response()->json(['message' => 'Reserva creada exitosamente', 'data' => $reserva], 200);
 
+            // Devolver la información de la reserva
+            return response()->json(['message' => 'Reserva creada exitosamente', 'data' => $reserva], 200);
         }
 
         return response()->json(['message' => 'Error al realizar la reserva'], 500);
     }
+
 
 
 
@@ -83,7 +86,7 @@ class ReservaController extends Controller
         $reserva = self::realizarReserva($libroId, $usuarioId);
 
         if ($reserva) {
-            return response()->json(['message' => 'Libro prestado exitosamente', 'Reserva' => $reserva ], 200);
+            return response()->json(['message' => 'Libro prestado exitosamente', 'Reserva' => $reserva], 200);
         } else {
             return response()->json(['message' => 'El libro no está disponible, agregado a la lista de espera'], 200);
         }
