@@ -1,1 +1,27 @@
-<p>books works!</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4" *ngFor="let book of books">
+      <div class="card card-book mb-4 rounded">
+        <img [src]="book.coverUrl" class="card-img-top" alt="{{ book.title }}">
+        <div class="card-body">
+          <h5 class="card-title fw-bold">{{ book.title }}</h5>
+          <p class="card-text">{{ book.description }}</p>
+          <p class="card-text text-end fw-bold">Rating: {{ book.rating }} | 5</p>
+          <div class="d-flex justify-content-end">
+            <!-- Mostrar mensaje si el libro está prestado -->
+            <ng-container *ngIf="isBookReserved(book); else reserveButton">
+              <p class="card-text text-end fw-bold">Libro Prestado</p>
+            </ng-container>
+
+            <!-- Mostrar el botón Reservar si el libro no está prestado -->
+            <ng-template #reserveButton>
+              <button *ngIf="!isBookReserved(book)" class="btn btn-primary rounded fw-bold" style="width: 150px;">
+                Reservar
+              </button>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
