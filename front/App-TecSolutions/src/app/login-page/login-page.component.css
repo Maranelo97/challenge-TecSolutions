@@ -1,0 +1,21 @@
+.body-login{
+  height: 100vh;
+  background: rgb(0,212,255);
+background: linear-gradient(194deg, rgba(0,212,255,1) 10%, rgba(77,77,213,1) 51%, rgba(6,78,166,1) 82%, rgba(2,0,36,1) 100%);
+}
+
+.login-aside {
+  max-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login {
+  margin-top: 4%;
+  height: 50vh;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
