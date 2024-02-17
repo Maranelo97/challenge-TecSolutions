@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 15-02-2024 a las 15:05:38
+-- Tiempo de generación: 17-02-2024 a las 02:10:43
 -- Versión del servidor: 8.0.31
 -- Versión de PHP: 8.0.26
 
@@ -268,7 +268,14 @@ CREATE TABLE IF NOT EXISTS `reservas` (
   PRIMARY KEY (`id`),
   KEY `reservas_libro_id_foreign` (`libro_id`),
   KEY `reservas_usuario_id_foreign` (`usuario_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `reservas`
+--
+
+INSERT INTO `reservas` (`id`, `titleDelivered`, `deliveredAt`, `deliveredTo`, `active`, `libro_id`, `usuario_id`, `created_at`, `updated_at`) VALUES
+(2, 'Cien años de soledad', '2024-02-15 15:40:27', 'test', 1, 4, 1, '2024-02-17 03:21:38', '2024-02-17 03:21:38');
 
 -- --------------------------------------------------------
 
@@ -304,14 +311,15 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
 INSERT INTO `usuarios` (`id`, `username`, `password`, `email`, `historial`, `created_at`, `updated_at`) VALUES
-(1, 'test', 'test123', 'test@gmail.com', NULL, NULL, NULL);
+(1, 'test', 'test123', 'test@gmail.com', '[{\"titulo\": \"El Padrino\", \"fecha_prestamo\": \"2024-02-17T00:21:21.581219Z\"}, {\"titulo\": \"Cien años de soledad\", \"fecha_prestamo\": \"2024-02-17T00:21:38.885261Z\"}]', NULL, '2024-02-17 03:21:38'),
+(3, 'test2', 'test1234', 'test2@gmail.com', NULL, NULL, NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
