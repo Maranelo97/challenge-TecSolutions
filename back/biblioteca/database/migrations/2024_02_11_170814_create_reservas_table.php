@@ -17,6 +17,7 @@ return new class extends Migration
             $table->timestamp('deliveredAt')->default(now());
             $table->string('deliveredTo');
             $table->boolean('active')->default(true);
+            $table->integer('position');
             $table->unsignedBigInteger('libro_id');
             $table->unsignedBigInteger('usuario_id');
             $table->timestamps();

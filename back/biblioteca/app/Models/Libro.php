@@ -25,4 +25,10 @@ class Libro extends Model
     {
         return !$this->delivered && $this->reservas->where('active', true)->count() == 0;
     }
+
+
+    public function obtenerSiguientePosicionListaEspera()
+{
+    return $this->reservas()->max('position') + 1;
+}
 }

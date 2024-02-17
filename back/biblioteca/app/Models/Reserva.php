@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reserva extends Model
 {
-    protected $fillable = ['titleDelivered', 'deliveredAt', 'deliveredTo', 'active'];
+    protected $fillable = ['titleDelivered', 'deliveredAt', 'deliveredTo', 'active', 'position'];
 
     public function libro()
     {

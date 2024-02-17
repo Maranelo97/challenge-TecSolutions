@@ -46,7 +46,20 @@ class ReservaController extends Controller
         if ($libro && $usuario) {
             // Verificar si el libro ya está prestado
             if ($libro->tieneReservasActivas()) {
-                return response()->json(['message' => 'El libro ya está prestado, agregado a la lista de espera'], 200);
+                // Agregar a la lista de espera con posición
+                $posicion = $libro->obtenerSiguientePosicionListaEspera();
+                $reserva = new Reserva([
+                    'titleDelivered' => $libro->title,
+                    'deliveredTo' => $usuario->username,
+                    'active' => false,
+                    'position' => $posicion,
+                ]);
+
+                $reserva->libro()->associate($libro);
+                $reserva->usuario()->associate($usuario);
+                $reserva->save();
+
+                return response()->json(['message' => 'El libro ya está prestado, agregado a la lista de espera', 'position' => $posicion], 200);
             }
 
             // Realizar la reserva
