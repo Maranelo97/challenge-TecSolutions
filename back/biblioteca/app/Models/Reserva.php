@@ -24,7 +24,6 @@ class Reserva extends Model
     public function liberarLibro()
     {
         // Lógica para liberar el libro
-        $this->libro->incrementarVecesEntregado();
         $this->delete();
     }
 }
