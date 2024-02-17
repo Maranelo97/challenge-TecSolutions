@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 17-02-2024 a las 02:10:43
+-- Tiempo de generación: 17-02-2024 a las 16:17:40
 -- Versión del servidor: 8.0.31
 -- Versión de PHP: 8.0.26
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `libros` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `libros_usuario_id_foreign` (`usuario_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `libros`
@@ -103,13 +103,25 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `migrations`
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(39, '2014_10_12_000000_create_users_table', 1),
+(40, '2014_10_12_100000_create_password_reset_tokens_table', 1),
+(41, '2016_06_01_000001_create_oauth_auth_codes_table', 1),
+(42, '2016_06_01_000002_create_oauth_access_tokens_table', 1),
+(43, '2016_06_01_000003_create_oauth_refresh_tokens_table', 1),
+(44, '2016_06_01_000004_create_oauth_clients_table', 1),
+(45, '2016_06_01_000005_create_oauth_personal_access_clients_table', 1),
+(46, '2019_08_19_000000_create_failed_jobs_table', 1),
+(47, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(48, '2024_02_11_170744_create_libros_table', 1),
+(49, '2024_02_11_170809_create_usuarios_table', 1),
+(50, '2024_02_11_170814_create_reservas_table', 1),
 (27, '2014_10_12_000000_create_users_table', 1),
 (28, '2014_10_12_100000_create_password_reset_tokens_table', 1),
 (29, '2016_06_01_000001_create_oauth_auth_codes_table', 1),
@@ -258,9 +270,10 @@ DROP TABLE IF EXISTS `reservas`;
 CREATE TABLE IF NOT EXISTS `reservas` (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `titleDelivered` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `deliveredAt` timestamp NOT NULL DEFAULT '2024-02-15 15:40:27',
+  `deliveredAt` timestamp NOT NULL DEFAULT '2024-02-17 05:11:04',
   `deliveredTo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
+  `position` int NOT NULL,
   `libro_id` bigint UNSIGNED NOT NULL,
   `usuario_id` bigint UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -268,14 +281,16 @@ CREATE TABLE IF NOT EXISTS `reservas` (
   PRIMARY KEY (`id`),
   KEY `reservas_libro_id_foreign` (`libro_id`),
   KEY `reservas_usuario_id_foreign` (`usuario_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `reservas`
 --
 
-INSERT INTO `reservas` (`id`, `titleDelivered`, `deliveredAt`, `deliveredTo`, `active`, `libro_id`, `usuario_id`, `created_at`, `updated_at`) VALUES
-(2, 'Cien años de soledad', '2024-02-15 15:40:27', 'test', 1, 4, 1, '2024-02-17 03:21:38', '2024-02-17 03:21:38');
+INSERT INTO `reservas` (`id`, `titleDelivered`, `deliveredAt`, `deliveredTo`, `active`, `position`, `libro_id`, `usuario_id`, `created_at`, `updated_at`) VALUES
+(2, 'Cien años de soledad', '2024-02-15 18:40:27', 'test', 1, 0, 4, 1, '2024-02-17 06:21:38', '2024-02-17 06:21:38'),
+(3, 'Cien años de soledad', '2024-02-17 05:11:04', 'test2', 0, 1, 4, 3, '2024-02-17 05:14:48', '2024-02-17 05:14:48'),
+(4, 'Cien años de soledad', '2024-02-17 05:11:04', 'test3', 0, 2, 4, 4, '2024-02-17 05:15:34', '2024-02-17 05:15:34');
 
 -- --------------------------------------------------------
 
@@ -311,15 +326,16 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
 INSERT INTO `usuarios` (`id`, `username`, `password`, `email`, `historial`, `created_at`, `updated_at`) VALUES
-(1, 'test', 'test123', 'test@gmail.com', '[{\"titulo\": \"El Padrino\", \"fecha_prestamo\": \"2024-02-17T00:21:21.581219Z\"}, {\"titulo\": \"Cien años de soledad\", \"fecha_prestamo\": \"2024-02-17T00:21:38.885261Z\"}]', NULL, '2024-02-17 03:21:38'),
-(3, 'test2', 'test1234', 'test2@gmail.com', NULL, NULL, NULL);
+(1, 'test', 'test123', 'test@gmail.com', '[{\"titulo\": \"El Padrino\", \"fecha_prestamo\": \"2024-02-17T00:21:21.581219Z\"}, {\"titulo\": \"Cien años de soledad\", \"fecha_prestamo\": \"2024-02-17T00:21:38.885261Z\"}]', NULL, '2024-02-17 06:21:38'),
+(3, 'test2', 'test1234', 'test2@gmail.com', NULL, NULL, NULL),
+(4, 'test3', 'test123456', 'test3@gmail.com', NULL, NULL, NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
