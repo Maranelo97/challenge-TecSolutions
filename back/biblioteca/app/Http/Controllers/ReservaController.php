@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Reserva;
 use App\Models\Libro;
 use App\Models\Usuario;
+use App\Notifications\LibroDisponibleNotification;
 
 class ReservaController extends Controller
 {
@@ -42,7 +43,7 @@ class ReservaController extends Controller
     {
         $libro = Libro::find($libroId);
         $usuario = Usuario::findOrFail($usuarioId);
-
+    
         if ($libro && $usuario) {
             // Verificar si el libro ya está prestado
             if ($libro->tieneReservasActivas()) {
@@ -54,25 +55,28 @@ class ReservaController extends Controller
                     'active' => false,
                     'position' => $posicion,
                 ]);
-
+    
                 $reserva->libro()->associate($libro);
                 $reserva->usuario()->associate($usuario);
                 $reserva->save();
-
+    
+                // Notificar al usuario sobre la posición en la lista de espera
+                $usuario->notify(new LibroDisponibleNotification($posicion));
+    
                 return response()->json(['message' => 'El libro ya está prestado, agregado a la lista de espera', 'position' => $posicion], 200);
             }
-
+    
             // Realizar la reserva
             $reserva = new Reserva([
                 'titleDelivered' => $libro->title,
                 'deliveredTo' => $usuario->username,
                 'active' => true,
             ]);
-
+    
             $reserva->libro()->associate($libro);
             $reserva->usuario()->associate($usuario);
             $reserva->save();
-
+    
             // Actualizar el historial de libros del usuario
             $historial = $usuario->historial ?? [];
             $historial[] = [
@@ -80,16 +84,13 @@ class ReservaController extends Controller
                 'fecha_prestamo' => now(),
             ];
             $usuario->update(['historial' => $historial]);
-
-
-
+    
             // Devolver la información de la reserva
             return response()->json(['message' => 'Reserva creada exitosamente', 'data' => $reserva], 200);
         }
-
+    
         return response()->json(['message' => 'Error al realizar la reserva'], 500);
     }
-
 
 
 
