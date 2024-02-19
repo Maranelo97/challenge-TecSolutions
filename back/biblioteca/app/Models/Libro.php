@@ -26,9 +26,28 @@ class Libro extends Model
         return !$this->delivered && $this->reservas->where('active', true)->count() == 0;
     }
 
+    public function obtenerPrimeraReservaListaEspera()
+    {
+        return $this->reservas()->where('active', false)->orderBy('position')->first();
+    }
+
+    public function liberarLibro()
+{
+    // Obtener la primera reserva activa
+    $reservaActiva = $this->reservas()->where('active', true)->first();
+
+    if ($reservaActiva) {
+        // Liberar el libro
+        $reservaActiva->liberarLibro();
+    }
+}
+
 
     public function obtenerSiguientePosicionListaEspera()
-{
-    return $this->reservas()->max('position') + 1;
+    {
+        return $this->reservas()->max('position') + 1;
+    }
 }
-}
+
+
+

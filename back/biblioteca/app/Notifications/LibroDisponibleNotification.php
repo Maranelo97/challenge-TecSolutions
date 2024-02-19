@@ -14,9 +14,9 @@ class LibroDisponibleNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($posicion)
     {
-        //
+        $this->posicion = $posicion;
     }
 
     /**
@@ -36,7 +36,7 @@ class LibroDisponibleNotification extends Notification
     {
         return (new MailMessage)
             ->line('El libro que estabas esperando está disponible.')
-            ->action('Ir a la biblioteca', url('/biblioteca'))
+            ->action('Ir a la biblioteca', url('http://localhost:4200'))
             ->line('¡Gracias por usar nuestra biblioteca!');
     }
 
