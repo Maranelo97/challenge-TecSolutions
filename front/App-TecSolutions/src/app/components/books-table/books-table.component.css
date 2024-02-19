@@ -7,3 +7,12 @@
 .icon:hover{
   color: #fff;
 }
+
+.point{
+  cursor: pointer;
+  transition: 1ms;
+}
+
+.point:hover{
+  color: #5b5eeb;
+}

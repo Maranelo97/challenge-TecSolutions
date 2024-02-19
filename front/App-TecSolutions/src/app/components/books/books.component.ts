@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-books',
@@ -17,15 +18,29 @@ export class BooksComponent {
   }
 
   private fetchBooks(): void {
-    const apiUrl = 'http://127.0.0.1:8000/api/libros';
+    const apiUrl = `${environment.apiUrl}/libros`;
 
     this.http.get(apiUrl).subscribe(
       (response: any) => {
-        console.log(response)
         this.books = response;
       },
       (error) => {
         console.error('Error al obtener libros', error);
+      }
+    );
+  }
+
+
+
+  reserveBook(book: any): void {
+    const apiUrl = `${environment.apiUrl}/reservas/prestar/${book.id}/1`; // Asumiendo que '1' es el usuarioId harcodeado
+
+    this.http.post(apiUrl, {}).subscribe(
+      () => {
+        this.fetchBooks();
+      },
+      (error) => {
+        console.error('Error al realizar la reserva', error);
       }
     );
   }

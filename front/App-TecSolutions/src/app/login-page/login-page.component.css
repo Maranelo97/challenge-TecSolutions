@@ -10,10 +10,19 @@ background: linear-gradient(194deg, rgba(0,212,255,1) 10%, rgba(77,77,213,1) 51%
   justify-content: center;
   align-items: center;
 }
+.logo{
+  max-width: 250px;
+  margin: 0 auto;
+}
+
+.logo img {
+  width: 100%;
+  background-color: aquamarine;
+}
 
 .login {
   margin-top: 4%;
-  height: 50vh;
+  height: 70vh;
   width: 300px;
   display: flex;
   flex-direction: column;
@@ -22,3 +31,8 @@ background: linear-gradient(194deg, rgba(0,212,255,1) 10%, rgba(77,77,213,1) 51%
 
 
 .scale-up-bottom{animation:scale-up-bottom 0.4s; } @keyframes scale-up-bottom{0%{transform:scale(.5);transform-origin:center bottom}100%{transform:scale(1);transform-origin:center bottom}}
+
+
+.border-danger {
+  border-color: red;
+}

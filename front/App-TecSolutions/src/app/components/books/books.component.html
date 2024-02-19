@@ -8,14 +8,13 @@
           <p class="card-text">{{ book.description }}</p>
           <p class="card-text text-end fw-bold">Rating: {{ book.rating }} | 5</p>
           <div class="d-flex justify-content-end">
-            <!-- Mostrar mensaje si el libro está prestado -->
             <ng-container *ngIf="isBookReserved(book); else reserveButton">
               <p class="card-text text-end fw-bold">Libro Prestado</p>
             </ng-container>
 
-            <!-- Mostrar el botón Reservar si el libro no está prestado -->
             <ng-template #reserveButton>
-              <button *ngIf="!isBookReserved(book)" class="btn btn-primary rounded fw-bold" style="width: 150px;">
+              <button *ngIf="!isBookReserved(book)" class="btn btn-primary rounded fw-bold" style="width: 150px;"
+                      (click)="reserveBook(book)">
                 Reservar
               </button>
             </ng-template>

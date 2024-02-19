@@ -8,10 +8,11 @@
       (click)="toggleNavbar()">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse text-center  animate__animated animate__fadeIn" [ngClass]="{'show': !isNavbarCollapsed}">
+    <div class="collapse navbar-collapse text-center animate__animated animate__fadeIn"
+      [ngClass]="{'show': !isNavbarCollapsed}">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/home">
+          <a class="nav-link" routerLink="/dashboard">
             <mat-icon class="icon">home</mat-icon> Home
           </a>
         </li>
@@ -31,8 +32,28 @@
 </nav>
 
 <section class="container-fluid">
-  <app-resumeboard></app-resumeboard>
-  <hr />
-  <h5 class="fw-bold p-4 m-2">Libros Disponibles</h5>
-  <app-books></app-books>
+  <div class="d-flex align-items-center justify-content-around mt-2">
+    <h5 class="fw-bold mt-2">Busca el libro por nombre</h5>
+    <input type="text" class="form-control w-25" (input)="searchBooksByName($event)" />
+  </div>
+
+  <table class="table table-hover mt-3">
+    <thead>
+      <tr>
+        <th class="bg-info text-white" scope="col">Titulo</th>
+        <th class="bg-info text-white" scope="col">Puntuación</th>
+        <th class="bg-info text-white" scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let book of books">
+        <th scope="row">{{ book.title }}</th>
+        <td>{{ book.rating }} de 5</td>
+        <td>
+          <mat-icon class="cursor-pointer point" (click)="openEditForm(book)">edit</mat-icon>
+          <mat-icon class="cursor-pointer point" (click)="deleteBook(book.id)">delete</mat-icon>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </section>

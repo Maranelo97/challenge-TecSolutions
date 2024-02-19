@@ -8,4 +8,10 @@ import { LoginService } from '../services/login.service';
 })
 export class DashboardComponent  {
 
+  isNavbarCollapsed = true;
+
+  toggleNavbar() {
+    this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
 }
